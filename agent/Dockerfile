@@ -15,7 +15,7 @@ RUN cd /tmp && \
 COPY ["buildkite-agent.list", "/etc/apt/sources.list.d/"]
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 32A37959C2FA5C3C99EFBC32A79206696452D198 && \
     apt-get update -o Dir::Etc::sourcelist="sources.list.d/buildkite-agent.list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" && \
-    apt-get -y install buildkite-agent
+    apt-get install -y buildkite-agent
 
 COPY ["ssh", "/root/.ssh"]
 
