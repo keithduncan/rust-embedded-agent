@@ -21,7 +21,7 @@ COPY ["ssh", "/root/.ssh"]
 
 ENV BUILDKITE_BUILD_PATH=/var/lib/buildkite-agent/builds
 
-LABEL buildkite.metadata=yq,rust=stable,rust-version=1.34,rust-embedded,rust-target=thumbv6m-none-eabi,rust-target=thumbv7em-none-eabihf
+LABEL buildkite.metadata=rust=stable,rust:version=1.34,rust:embedded,rust:target=thumbv6m-none-eabi,rust:target=thumbv7em-none-eabihf,yq=true,yq:version=2.3.0
 
 ENTRYPOINT ["/usr/bin/buildkite-agent"]
 CMD ["start"]
