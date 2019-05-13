@@ -10,7 +10,9 @@ RUN apt-get update && \
 # The ppa doesn't work on debian
 RUN cd /tmp && \
 	arch="$(dpkg --print-architecture)" && \
-	curl --location "https://github.com/mikefarah/yq/releases/download/2.3.0/yq_linux_${arch}" >/usr/local/bin/yq
+	curl --location "https://github.com/mikefarah/yq/releases/download/2.3.0/yq_linux_${arch}" >yq && \
+	chmod +x yq && \
+	mv yq /usr/local/bin/
 
 COPY ["buildkite-agent.list", "/etc/apt/sources.list.d/"]
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 32A37959C2FA5C3C99EFBC32A79206696452D198 && \
