@@ -1,5 +1,0 @@
-#!/bin/bash
-
-set -xe
-
-exec rustup default "${BUILDKITE_AGENT_META_DATA_RUST}"

@@ -22,12 +22,11 @@ RUN set -eux; \
     chmod -R a+w $RUSTUP_HOME $CARGO_HOME; \
     rustup --version;
 
-RUN rustup toolchain install stable && \
-	rustup target add --toolchain stable thumbv6m-none-eabi && \
-	rustup target add --toolchain stable thumbv7em-none-eabihf && \
-    rustup toolchain install nightly && \
-    rustup target add --toolchain nightly thumbv6m-none-eabi && \
-    rustup target add --toolchain nightly thumbv7em-none-eabihf
+ARG TOOLCHAIN=stable
+RUN rustup toolchain install $TOOLCHAIN && \
+	rustup target add --toolchain $TOOLCHAIN thumbv6m-none-eabi && \
+	rustup target add --toolchain $TOOLCHAIN thumbv7em-none-eabihf && \
+    rustup default $TOOLCHAIN
 
 RUN apt-get update && \
 	apt-get install -y \
@@ -37,15 +36,13 @@ COPY ["buildkite-agent.list", "/etc/apt/sources.list.d/"]
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 32A37959C2FA5C3C99EFBC32A79206696452D198 && \
     apt-get update -o Dir::Etc::sourcelist="sources.list.d/buildkite-agent.list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" && \
     apt-get install -y buildkite-agent
-COPY ["hooks", "/etc/buildkite-agent/hooks/"]
-ENV BUILDKITE_BUILD_PATH=/var/lib/buildkite-agent/builds \
-    BUILDKITE_HOOKS_PATH=/etc/buildkite-agent/hooks
+ENV BUILDKITE_BUILD_PATH=/var/lib/buildkite-agent/builds
 
 COPY ["ssh", "/root/.ssh"]
 
 RUN cargo install --git https://github.com/keithduncan/travis-pipeline --tag v0.2
 
-LABEL buildkite.metadata=rust=stable,rust=nightly,rust:embedded,rust:target=thumbv6m-none-eabi,rust:target=thumbv7em-none-eabihf,travis-pipeline,travis-pipeline:version=0.2
+LABEL buildkite.metadata=rust=$TOOLCHAIN,rust:embedded,rust:target=thumbv6m-none-eabi,rust:target=thumbv7em-none-eabihf,travis-pipeline,travis-pipeline:version=0.2
 
 ENTRYPOINT ["/usr/bin/buildkite-agent"]
 CMD ["start"]
