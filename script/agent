@@ -2,8 +2,7 @@
 set -euo pipefail
 
 AGENT_NAME="rust-embedded-agent"
-AGENT_NUMBER="${1:-1}"
-TOOLCHAIN="${2:-stable}"
+TOOLCHAIN="${1:-stable}"
 
 if [ -z "${BUILDKITE_AGENT_TOKEN:-}" ]
 then
@@ -28,8 +27,8 @@ docker run \
   --init \
   --detach \
   --restart always \
-  --name "${AGENT_NAME}-${AGENT_NUMBER}" \
-  --hostname "${AGENT_NAME}-${AGENT_NUMBER}" \
+  --name "${AGENT_NAME}-${RANDOM}" \
+  --hostname "${AGENT_NAME}-${RANDOM}" \
   --volume ~/.ssh/buildkite:/root/.ssh/id_rsa \
   --volume "${cache}":/root/.cargo \
   --env BUILDKITE_GIT_CLEAN_FLAGS="-fdq" \
