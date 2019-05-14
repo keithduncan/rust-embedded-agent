@@ -24,6 +24,9 @@ metadata="$(docker inspect -f '{{ index .Config.Labels "buildkite.metadata" }}' 
 cache="${AGENT_NAME}-cache"
 docker volume create --name "${cache}"
 
+workspace="${AGENT_NAME}-workspace"
+docker volume create --name "${workspace}"
+
 docker run \
   --init \
   --detach \
@@ -32,6 +35,7 @@ docker run \
   --hostname "${AGENT_NAME}-${AGENT_NUMBER}" \
   --volume ~/.ssh/buildkite:/root/.ssh/id_rsa \
   --volume "${cache}":/root/.cargo \
+  --volume "${workspace}":/var/lib/buildkite-agent/builds \
   --env BUILDKITE_GIT_CLEAN_FLAGS="-fdq" \
   --env BUILDKITE_AGENT_TOKEN \
   --env BUILDKITE_AGENT_META_DATA="${metadata}" \
