@@ -3,6 +3,7 @@ set -euo pipefail
 
 AGENT_NAME="rust-embedded-agent"
 AGENT_NUMBER="${1:-1}"
+TOOLCHAIN="${2:-stable}"
 
 if [ -z "${BUILDKITE_AGENT_TOKEN:-}" ]
 then
@@ -14,10 +15,11 @@ then
   exit 1
 fi
 
-docker build -t "$AGENT_NAME" agent
+tag="$AGENT_NAME:$TOOLCHAIN"
+docker build --build-arg TOOLCHAIN="$TOOLCHAIN" --tag "$tag" agent
 
 # Extract buildkite agent labels from the image
-metadata="$(docker inspect -f '{{ index .Config.Labels "buildkite.metadata" }}' "${AGENT_NAME}")"
+metadata="$(docker inspect -f '{{ index .Config.Labels "buildkite.metadata" }}' "${tag}")"
 
 cache="${AGENT_NAME}-cache"
 docker volume create --name "${cache}"
@@ -34,4 +36,4 @@ docker run \
   --env BUILDKITE_AGENT_TOKEN \
   --env BUILDKITE_AGENT_META_DATA="${metadata}" \
   --env BUILDKITE_AGENT_SPAWN=8 \
-  "$AGENT_NAME"
+  "$tag"
