@@ -40,7 +40,7 @@ ENV BUILDKITE_BUILD_PATH=/var/lib/buildkite-agent/builds
 
 COPY ["ssh", "/root/.ssh"]
 
-RUN cargo install --git https://github.com/keithduncan/travis-pipeline --tag v0.2
+RUN cargo install --git https://github.com/keithduncan/travis-pipeline --tag v0.3
 
 LABEL buildkite.metadata=rust=$TOOLCHAIN,rust:embedded,rust:target=thumbv6m-none-eabi,rust:target=thumbv7em-none-eabihf,travis-pipeline,travis-pipeline:version=0.2
 
