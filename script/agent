@@ -34,5 +34,5 @@ docker run \
   --env BUILDKITE_GIT_CLEAN_FLAGS="-fdq" \
   --env BUILDKITE_AGENT_TOKEN \
   --env BUILDKITE_AGENT_META_DATA="${metadata}" \
-  --env BUILDKITE_AGENT_SPAWN=8 \
+  --env BUILDKITE_AGENT_SPAWN=4 \
   "$tag"
