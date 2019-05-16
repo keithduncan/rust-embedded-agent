@@ -38,9 +38,7 @@ RUN rustup toolchain install $TOOLCHAIN && \
     rustup target add --toolchain $TOOLCHAIN thumbv7em-none-eabihf && \
     rustup default $TOOLCHAIN
 
-RUN cargo install --git https://github.com/keithduncan/travis-pipeline --tag v0.4
-
-LABEL buildkite.metadata=rust=$TOOLCHAIN,rust:embedded,rust:target=thumbv6m-none-eabi,rust:target=thumbv7em-none-eabihf,travis-pipeline,travis-pipeline:version=0.2
+LABEL buildkite.metadata=rust=$TOOLCHAIN,rust:embedded,rust:target=thumbv6m-none-eabi,rust:target=thumbv7em-none-eabihf
 
 ENTRYPOINT ["/usr/bin/buildkite-agent"]
 CMD ["start"]
