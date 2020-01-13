@@ -2,7 +2,8 @@ FROM buildpack-deps:stretch
 
 RUN apt-get update && \
 	apt-get install -y \
-      apt-transport-https
+      apt-transport-https \
+      python-pip
 
 COPY ["buildkite-agent.list", "/etc/apt/sources.list.d/"]
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 32A37959C2FA5C3C99EFBC32A79206696452D198 && \
@@ -11,6 +12,8 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 32A37959C2
 ENV BUILDKITE_BUILD_PATH=/var/lib/buildkite-agent/builds
 
 COPY ["ssh", "/root/.ssh"]
+
+RUN pip install awscli~=1.16 --upgrade
 
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
