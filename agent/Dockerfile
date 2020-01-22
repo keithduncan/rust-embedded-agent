@@ -37,13 +37,14 @@ RUN set -eux; \
     rm rustup-init; \
     chmod -R a+w $RUSTUP_HOME $CARGO_HOME; \
     rustup --version;
-ARG TOOLCHAIN=stable
-RUN rustup toolchain install $TOOLCHAIN && \
-    rustup target add --toolchain $TOOLCHAIN thumbv6m-none-eabi && \
-    rustup target add --toolchain $TOOLCHAIN thumbv7em-none-eabihf && \
-    rustup default $TOOLCHAIN
 
-LABEL buildkite.metadata=rust=$TOOLCHAIN,rust:embedded,rust:target=thumbv6m-none-eabi,rust:target=thumbv7em-none-eabihf
+ARG TOOLCHAIN="stable nightly"
+RUN for toolchain in $TOOLCHAIN; \
+    do \
+        rustup toolchain install $toolchain && \
+        rustup target add --toolchain $toolchain thumbv6m-none-eabi && \
+        rustup target add --toolchain $toolchain thumbv7em-none-eabihf; \
+    done
 
 ENTRYPOINT ["/usr/bin/buildkite-agent"]
 CMD ["start"]
