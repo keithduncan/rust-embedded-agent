@@ -41,9 +41,12 @@ RUN set -eux; \
 ARG TOOLCHAIN="stable nightly"
 RUN for toolchain in $TOOLCHAIN; \
     do \
-        rustup toolchain install $toolchain && \
-        rustup target add --toolchain $toolchain thumbv6m-none-eabi && \
-        rustup target add --toolchain $toolchain thumbv7em-none-eabihf; \
+        rustup toolchain install \
+            --no-self-update \
+            --profile minimal \
+            --target=thumbv6m-none-eabi \
+            --target=thumbv7em-none-eabihf \
+            $toolchain; \
     done
 
 ENTRYPOINT ["/usr/bin/buildkite-agent"]
