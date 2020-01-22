@@ -1,6 +1,9 @@
 version: 0.2
 
 phases:
+  install:
+    runtime-versions:
+      docker: 18
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
@@ -10,12 +13,9 @@ phases:
   build:
     commands:
       - echo Build started on `date`, building the docker image...
-      - docker build --cache-from $IMAGE_REPO:stable --tag agent:stable  --build-arg stable  agent
-      - docker build --cache-from $IMAGE_REPO:stable --tag agent:nightly --build-arg nightly agent
+      - docker build --cache-from $IMAGE_REPO:stable --tag agent:stable --build-arg stable agent
   post_build:
     commands:
       - echo Build completed on `date`, pushing the Docker image...
       - docker tag agent:stable $IMAGE_REPO:stable
       - docker push $IMAGE_REPO:stable
-      - docker tag agent:nightly $IMAGE_REPO:nightly
-      - docker push $IMAGE_REPO:nightly
