@@ -33,7 +33,7 @@ RUN set -eux; \
     wget "$url"; \
     echo "${rustupSha256} *rustup-init" | sha256sum -c -; \
     chmod +x rustup-init; \
-    ./rustup-init -y --no-modify-path --profile minimal --default-toolchain none; \
+    ./rustup-init -y --no-modify-path --profile=minimal --default-toolchain=none; \
     rm rustup-init; \
     chmod -R a+w $RUSTUP_HOME $CARGO_HOME; \
     rustup --version;
@@ -43,10 +43,10 @@ RUN for toolchain in $TOOLCHAIN; \
     do \
         rustup toolchain install \
             --no-self-update \
-            --profile minimal \
             --target=thumbv6m-none-eabi \
             --target=thumbv7em-none-eabihf \
             $toolchain; \
+        rustup target remove --toolchain $toolchain x86_64-unknown-linux-gnu || true; \
     done
 
 ENTRYPOINT ["/usr/bin/buildkite-agent"]
