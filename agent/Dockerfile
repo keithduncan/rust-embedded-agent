@@ -49,7 +49,6 @@ RUN for toolchain in $TOOLCHAIN; \
             --target=thumbv6m-none-eabi \
             --target=thumbv7em-none-eabihf \
             $toolchain; \
-        rustup target remove --toolchain $toolchain x86_64-unknown-linux-gnu || true; \
     done
 
 ENTRYPOINT ["/usr/bin/buildkite-agent"]
