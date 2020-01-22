@@ -1,9 +1,11 @@
-FROM buildpack-deps:stretch
+FROM debian:buster
 
 RUN apt-get update && \
 	apt-get install -y \
       apt-transport-https \
-      python-pip
+      python-pip \
+      wget && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY ["buildkite-agent.list", "/etc/apt/sources.list.d/"]
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 32A37959C2FA5C3C99EFBC32A79206696452D198 && \
