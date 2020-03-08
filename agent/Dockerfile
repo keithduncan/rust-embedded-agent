@@ -2,17 +2,10 @@ FROM debian:buster
 
 RUN apt-get update && \
 	apt-get install -y \
-      apt-transport-https \
       git-core \
       python-pip \
       wget && \
-    echo "deb https://apt.buildkite.com/buildkite-agent stable main" >/etc/apt/sources.list.d/buildkite-agent.list && \
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 32A37959C2FA5C3C99EFBC32A79206696452D198 && \
-    apt-get update -o Dir::Etc::sourcelist="sources.list.d/buildkite-agent.list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" && \
-    apt-get install -y buildkite-agent && \
     rm -rf /var/lib/apt/lists/*
-
-ENV BUILDKITE_BUILD_PATH=/var/lib/buildkite-agent/builds
 
 COPY ["ssh", "/root/.ssh"]
 
@@ -50,6 +43,3 @@ RUN for toolchain in $TOOLCHAIN; \
             --target=thumbv7em-none-eabihf \
             $toolchain; \
     done
-
-ENTRYPOINT ["/usr/bin/buildkite-agent"]
-CMD ["start"]
