@@ -13,9 +13,8 @@ phases:
   build:
     commands:
       - echo Build started on `date`, building the docker image...
-      - docker build --cache-from $IMAGE_REPO --tag agent:latest agent
+      - docker build --cache-from $IMAGE_REPO --tag $IMAGE_REPO agent
   post_build:
     commands:
       - echo Build completed on `date`, pushing the Docker image...
-      - docker tag agent:latest $IMAGE_REPO
       - docker push $IMAGE_REPO
