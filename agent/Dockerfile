@@ -9,7 +9,8 @@ RUN apt-get update && \
 
 COPY ["ssh", "/root/.ssh"]
 
-RUN pip install awscli~=1.16 --upgrade
+ARG AWS_CLI=1.16
+RUN pip install awscli~="$AWS_CLI" --upgrade
 
 # Copied from https://github.com/rust-lang/docker-rust
 
@@ -43,3 +44,5 @@ RUN for toolchain in $TOOLCHAIN; \
             --target=thumbv7em-none-eabihf \
             $toolchain; \
     done
+
+ENV BUILDKITE_ABOUT_IMAGE "rust-embedded-agent\naws-cli: $AWS_CLI\nToolchain: $TOOLCHAIN"
