@@ -45,4 +45,5 @@ RUN for toolchain in $TOOLCHAIN; \
             $toolchain; \
     done
 
-ENV BUILDKITE_ABOUT_IMAGE "rust-embedded-agent\naws-cli: $AWS_CLI\nToolchain: $TOOLCHAIN"
+ARG COMMIT
+ENV BUILDKITE_ABOUT_IMAGE "keithduncan/rust-embedded-agent\ncommit: $COMMIT\n\n\naws-cli: $AWS_CLI\nToolchain: $TOOLCHAIN\ntarget: thumbv6m-none-eabi,thumbv7em-none-eabihf"
