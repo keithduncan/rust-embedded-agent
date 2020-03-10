@@ -13,7 +13,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`, building the docker image...
-      - docker build --cache-from $IMAGE_REPO --build-arg "${TOOLCHAIN:-stable nightly}" --tag $IMAGE_REPO agent
+      - docker build --cache-from $IMAGE_REPO --build-arg TOOLCHAIN="${TOOLCHAIN:-stable nightly}" --tag $IMAGE_REPO agent
   post_build:
     commands:
       - echo Build completed on `date`, pushing the Docker image...
